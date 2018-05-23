@@ -155,8 +155,15 @@ class IntervalsHandler implements FileHandler
 
         foreach ($this->intervals as $key => $value)
         {
+            if($value->getMean() == 0 && $value->getStandardDeviation() == 0 && $value->getEntropy() == 0 &&
+                $value->getMedianDepth() == 0 && $value->getMaxDepth() == 0)
+            {
+                continue;
+            }
+
             $results[] = array($value->getMean(), $value->getStandardDeviation(),
-                $value->getEntropy(), $value->getStart(), $value->getEnd());
+                $value->getEntropy(), $value->getStart(), $value->getEnd(),
+                $value->getMedianDepth(), $value->getMaxDepth());
 
             //[0,0,0,3207317,3213438]
 

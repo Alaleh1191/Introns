@@ -28,6 +28,12 @@ class Interval
      */
     protected $std;
 
+    /**
+     * @var int
+     * Median depth value for the interval
+     */
+    protected $medianDepth;
+
     /** @var double $entropy  */
     protected $entropy;
 
@@ -45,6 +51,9 @@ class Interval
      */
     protected $maxDepth;
 
+    // ----- Helpful variable for median calculation ----- //
+    protected $medianRemainingCount;
+
     /** @var int $subIntervalsSum */
     protected $subIntervalsDepthSum;
 
@@ -54,6 +63,8 @@ class Interval
         $this->end = $end + 0; // Converts it to a number
 
         $this->length = $this->getEnd() - $this->getStart();
+
+        $this->medianRemainingCount = floor($this->length / 2);
 
         $this->mean = 0;
         $this->std  = 0;
@@ -88,6 +99,22 @@ class Interval
     {
         $this->subIntervals[] = $interval;
     }
+
+    // ---------------------- Median -------------------- //
+
+    public function calculateMedian($bases, $depth)
+    {
+        $this->medianRemainingCount -= $bases;
+
+        if($this->medianRemainingCount <= 0)
+        {
+            $this->medianDepth = $depth;
+
+            // Reset to high number so this doesn't get set again.
+            $this->medianRemainingCount = $this->getLength();
+        }
+    }
+
 
     // ---------------------- Entropy ------------------- //
 
@@ -195,5 +222,15 @@ class Interval
     public function getEntropy()
     {
         return $this->entropy;
+    }
+
+    public function getMaxDepth()
+    {
+        return $this->maxDepth;
+    }
+
+    public function getMedianDepth()
+    {
+        return $this->medianDepth;
     }
 }

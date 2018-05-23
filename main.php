@@ -29,7 +29,7 @@ $intervalsHandler = new IntervalsHandler();
 $parser = new Parser('Files/'.$coverageFile, $intervalsHandler, $maxLines);
 
 
-// ------------------- Step 1: Mean and StdDev ---------------------- //
+// ------------------- Step 1: Mean, StdDev, Median Depth ---------------------- //
 
 /**
  * Handler for calculating the mean
@@ -53,13 +53,31 @@ $standardDeviationHandler = new StandardDeviationHandler($intervalsHandler);
  */
 $parser = new Parser('Files/'.$coverageFile, $standardDeviationHandler, $maxLines);
 
-$intervalsHandler->createSubIntervalsFile('Files/'.$coverageFile.'_subInterval.bed');
+/**
+ * Handler for calculating the Median Depth
+ */
+$medianHandler = new MedianHandler($intervalsHandler);
 
-if($maxLines > 0)
-{
-    print_r($intervalsHandler->getIntervalsArray());
-    print_r($intervalsHandler->getSubIntervalsArray());
-}
+/**
+ * Goes through each line of the file and gives it to the
+ * Median Handler to compute the mean for each interval
+ */
+$parser = new Parser('Files/'.$coverageFile, $medianHandler, $maxLines);
+
+/**
+ * Handler for calculating the Median Depth
+ */
+$maxDepthHandler = new MaxDepthHandler($intervalsHandler);
+
+/**
+ * Goes through each line of the file and gives it to the
+ * MaxDepth Handler to compute the mean for each interval
+ */
+$parser = new Parser('Files/'.$coverageFile, $maxDepthHandler, $maxLines);
+
+
+
+$intervalsHandler->createSubIntervalsFile('Files/'.$coverageFile.'_subInterval.bed');
 
 // --------------------- Step 2: Entropy ---------------------
 
@@ -73,11 +91,17 @@ $entropyParsingHandler = new EntropyStep2ParsingHandler($intervalsHandler);
 /**
  * Goes though each line of the file
  */
-$parser = new Parser('Files/'.$entropyFile, $entropyParsingHandler, $maxLines * 100);
+$parser = new Parser('Files/'.$entropyFile, $entropyParsingHandler, 60);
 
 $intervalsHandler->calculateEntropy();
 
 $intervalsHandler->createResultFile('Files/'.$coverageFile.'_result.txt');
+
+if($maxLines > 0)
+{
+    print_r($intervalsHandler->getIntervalsArray());
+    //print_r($intervalsHandler->getSubIntervalsArray());
+}
 
 
 

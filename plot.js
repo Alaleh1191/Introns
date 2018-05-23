@@ -1,4 +1,18 @@
-var data = [[5,3,2,1,2], [10,17,4,5,8], [15,4,2,6,7], [2,8,3,10,14]]; //first is mean, second is std, 3rd is entropy, 4th is start, 5th is end
+var xhr = new XMLHttpRequest();
+
+
+
+xhr.open('GET', 'Files/N1Bcoverage.bed_result.txt');
+
+xhr.onreadystatechange = function()
+{
+	if(xhr.readyState == 4 && xhr.status == 200)
+	{
+
+		var json = JSON.parse(xhr.responseText);
+
+
+var data = json;//[[5,3,2,1,2], [10,17,4,5,8], [15,4,2,6,7], [2,8,3,10,14]]; //first is mean, second is std, 3rd is entropy, 4th is start, 5th is end, 6th is median, 7th is max depth
    
 var margin = {top: 20, right: 15, bottom: 60, left: 60}
   , width = 500 - margin.left - margin.right
@@ -228,3 +242,152 @@ g2.selectAll("scatter-dots")
   .attr("cy", function (d) { return y(d[0]); } )
   .attr("class","ml")
   .attr("r", 2);
+
+//new chart
+var x3 = d3.scale.linear()
+          .domain([0, d3.max(data, function(d) { return d[5]; })])
+          .range([ 0, width ]);
+
+
+var chart3 = d3.select('.meanMedian')
+              .append('svg:svg')
+              .attr('width', width + margin.right + margin.left)
+              .attr('height', height + margin.top + margin.bottom)
+              .attr('class', 'chart')
+
+var main3 = chart3.append('g')
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('class', 'main')   
+    
+// draw the x axis
+var xAxis3 = d3.svg.axis()
+                  .scale(x3)
+                  .orient('bottom');
+
+
+main3.append('g')
+    .attr('transform', 'translate(0,' + height + ')')
+    .attr('class', 'main axis date')
+    .call(xAxis3)
+    .append("text")
+    .attr("class", "label")
+    .attr("x", width)
+    .attr("y", -6)
+    .style("text-anchor", "end")
+    .text("Median");
+
+
+
+main3.append('g')
+    .attr('transform', 'translate(0,0)')
+    .attr('class', 'main axis date')
+    .call(yAxis)
+    .append("text")
+    .attr("class", "label")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Mean");
+
+var g3 = main3.append("svg:g"); 
+
+g3.selectAll("scatter-dots")
+  .data(data)
+  .enter().append("svg:circle")
+  .attr("cx", function (d,i) { return x3(d[5]); } )
+  .on("mouseover", function(d) {
+      tooltip.transition()
+           .duration(200)
+           .style("opacity", .9);
+      tooltip.html("intron: [" + d[3]+", "+d[4]+"]")//d["Cereal Name"] + "<br/> (" + xValue(d) + ", " + yValue(d) + ")"
+           .style("left", (d3.event.pageX + 5) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+  })
+  .on("mouseout", function(d) {
+      tooltip.transition()
+           .duration(500)
+           .style("opacity", 0);
+  })
+  .attr("cy", function (d) { return y(d[0]); } )
+  .attr("class","mm")
+  .attr("r", 2);
+
+//new chart
+var x4 = d3.scale.linear()
+          .domain([0, d3.max(data, function(d) { return d[6]; })])
+          .range([ 0, width ]);
+
+
+var chart4 = d3.select('.meanMaxDepth')
+              .append('svg:svg')
+              .attr('width', width + margin.right + margin.left)
+              .attr('height', height + margin.top + margin.bottom)
+              .attr('class', 'chart')
+
+var main4 = chart4.append('g')
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('class', 'main')   
+    
+// draw the x axis
+var xAxis4 = d3.svg.axis()
+                  .scale(x4)
+                  .orient('bottom');
+
+
+main4.append('g')
+    .attr('transform', 'translate(0,' + height + ')')
+    .attr('class', 'main axis date')
+    .call(xAxis4)
+    .append("text")
+    .attr("class", "label")
+    .attr("x", width)
+    .attr("y", -6)
+    .style("text-anchor", "end")
+    .text("Maximum Depth");
+
+
+
+main4.append('g')
+    .attr('transform', 'translate(0,0)')
+    .attr('class', 'main axis date')
+    .call(yAxis)
+    .append("text")
+    .attr("class", "label")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Mean");
+
+var g4 = main4.append("svg:g"); 
+
+g4.selectAll("scatter-dots")
+  .data(data)
+  .enter().append("svg:circle")
+  .attr("cx", function (d,i) { return x4(d[6]); } )
+  .on("mouseover", function(d) {
+      tooltip.transition()
+           .duration(200)
+           .style("opacity", .9);
+      tooltip.html("intron: [" + d[3]+", "+d[4]+"]")//d["Cereal Name"] + "<br/> (" + xValue(d) + ", " + yValue(d) + ")"
+           .style("left", (d3.event.pageX + 5) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+  })
+  .on("mouseout", function(d) {
+      tooltip.transition()
+           .duration(500)
+           .style("opacity", 0);
+  })
+  .attr("cy", function (d) { return y(d[0]); } )
+  .attr("class","md")
+  .attr("r", 2);
+
+  }
+}
+
+xhr.send(null);
