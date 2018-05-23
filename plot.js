@@ -1,8 +1,6 @@
 var xhr = new XMLHttpRequest();
 
-
-
-xhr.open('GET', 'Files/N1Bcoverage.bed_result.txt');
+xhr.open('GET', 'Files/SE1Acoverage.bed_result.txt');
 
 xhr.onreadystatechange = function()
 {
@@ -11,7 +9,14 @@ xhr.onreadystatechange = function()
 
 		var json = JSON.parse(xhr.responseText);
 
+		var xhr2 = new XMLHttpRequest();
 
+		xhr2.onreadystatechange = function()
+        {
+            if(xhr2.readyState == 4 && xhr2.status == 200)
+            {
+
+var data1 = xhr2.responseText;
 var data = json;//[[5,3,2,1,2], [10,17,4,5,8], [15,4,2,6,7], [2,8,3,10,14]]; //first is mean, second is std, 3rd is entropy, 4th is start, 5th is end, 6th is median, 7th is max depth
    
 var margin = {top: 20, right: 15, bottom: 60, left: 60}
@@ -97,7 +102,28 @@ g.selectAll("scatter-dots")
   })
   .attr("cy", function (d) { return y(d[0]); } )
   .attr("class","ms")
-  .attr("r", 2);
+  .attr("r", 6);
+
+g.selectAll("scatter-dots")
+  .data(data1)
+  .enter().append("svg:circle")
+  .attr("cx", function (d,i) { return x(d[1]); } )
+  .on("mouseover", function(d) {
+      tooltip.transition()
+           .duration(200)
+           .style("opacity", .9);
+      tooltip.html("intron: [" + d[3]+", "+d[4]+"]")//d["Cereal Name"] + "<br/> (" + xValue(d) + ", " + yValue(d) + ")"
+           .style("left", (d3.event.pageX + 5) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+  })
+  .on("mouseout", function(d) {
+      tooltip.transition()
+           .duration(500)
+           .style("opacity", 0);
+  })
+  .attr("cy", function (d) { return y(d[0]); } )
+  .attr("class","me")
+  .attr("r", 4);
 
 //new chart
 var x1 = d3.scale.linear()
@@ -168,8 +194,29 @@ g1.selectAll("scatter-dots")
            .style("opacity", 0);
   })
   .attr("cy", function (d) { return y(d[0]); } )
+  .attr("class","ms")
+  .attr("r", 6);
+
+g1.selectAll("scatter-dots")
+  .data(data1)
+  .enter().append("svg:circle")
+  .attr("cx", function (d,i) { return x1(d[2]); } )
+  .on("mouseover", function(d) {
+      tooltip.transition()
+           .duration(200)
+           .style("opacity", .9);
+      tooltip.html("intron: [" + d[3]+", "+d[4]+"]")//d["Cereal Name"] + "<br/> (" + xValue(d) + ", " + yValue(d) + ")"
+           .style("left", (d3.event.pageX + 5) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+  })
+  .on("mouseout", function(d) {
+      tooltip.transition()
+           .duration(500)
+           .style("opacity", 0);
+  })
+  .attr("cy", function (d) { return y(d[0]); } )
   .attr("class","me")
-  .attr("r", 2);
+  .attr("r", 4);
 
 //new chart
 var x2 = d3.scale.linear()
@@ -240,8 +287,29 @@ g2.selectAll("scatter-dots")
            .style("opacity", 0);
   })
   .attr("cy", function (d) { return y(d[0]); } )
-  .attr("class","ml")
-  .attr("r", 2);
+  .attr("class","ms")
+  .attr("r", 6);
+
+g2.selectAll("scatter-dots")
+  .data(data1)
+  .enter().append("svg:circle")
+  .attr("cx", function (d,i) { return x2(d[4]-d[3]+1); } )
+  .on("mouseover", function(d) {
+      tooltip.transition()
+           .duration(200)
+           .style("opacity", .9);
+      tooltip.html("intron: [" + d[3]+", "+d[4]+"]")//d["Cereal Name"] + "<br/> (" + xValue(d) + ", " + yValue(d) + ")"
+           .style("left", (d3.event.pageX + 5) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+  })
+  .on("mouseout", function(d) {
+      tooltip.transition()
+           .duration(500)
+           .style("opacity", 0);
+  })
+  .attr("cy", function (d) { return y(d[0]); } )
+  .attr("class","me")
+  .attr("r", 4);
 
 //new chart
 var x3 = d3.scale.linear()
@@ -312,8 +380,29 @@ g3.selectAll("scatter-dots")
            .style("opacity", 0);
   })
   .attr("cy", function (d) { return y(d[0]); } )
-  .attr("class","mm")
-  .attr("r", 2);
+  .attr("class","ms")
+  .attr("r", 6);
+
+g3.selectAll("scatter-dots")
+  .data(data1)
+  .enter().append("svg:circle")
+  .attr("cx", function (d,i) { return x3(d[5]); } )
+  .on("mouseover", function(d) {
+      tooltip.transition()
+           .duration(200)
+           .style("opacity", .9);
+      tooltip.html("intron: [" + d[3]+", "+d[4]+"]")//d["Cereal Name"] + "<br/> (" + xValue(d) + ", " + yValue(d) + ")"
+           .style("left", (d3.event.pageX + 5) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+  })
+  .on("mouseout", function(d) {
+      tooltip.transition()
+           .duration(500)
+           .style("opacity", 0);
+  })
+  .attr("cy", function (d) { return y(d[0]); } )
+  .attr("class","me")
+  .attr("r", 4);
 
 //new chart
 var x4 = d3.scale.linear()
@@ -384,9 +473,35 @@ g4.selectAll("scatter-dots")
            .style("opacity", 0);
   })
   .attr("cy", function (d) { return y(d[0]); } )
-  .attr("class","md")
-  .attr("r", 2);
+  .attr("class","ms")
+  .attr("r", 6);
 
+g4.selectAll("scatter-dots")
+  .data(data1)
+  .enter().append("svg:circle")
+  .attr("cx", function (d,i) { return x4(d[6]); } )
+  .on("mouseover", function(d) {
+      tooltip.transition()
+           .duration(200)
+           .style("opacity", .9);
+      tooltip.html("intron: [" + d[3]+", "+d[4]+"]")//d["Cereal Name"] + "<br/> (" + xValue(d) + ", " + yValue(d) + ")"
+           .style("left", (d3.event.pageX + 5) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+  })
+  .on("mouseout", function(d) {
+      tooltip.transition()
+           .duration(500)
+           .style("opacity", 0);
+  })
+  .attr("cy", function (d) { return y(d[0]); } )
+  .attr("class","me")
+  .attr("r", 4);
+
+            }
+        }
+
+
+        xhr2.send(null);
   }
 }
 
