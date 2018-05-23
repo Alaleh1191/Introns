@@ -1,1 +1,9 @@
 Visualization of Intron Retention Data
+
+Step 1: Obtain two different coverage bed files:
+    1) Run: bedtools coverage -a "file containing introns" -b "bed file obtained by turning the SAM file after running HiSAT to BAM and then to bed using -bed12" -hist "coverage".bed
+    2) Run: bedtools coverage -a "file containing each intron interval divided to 10 subinterval (10 lines per line in the file above)" -b "bed file same as above" -hist "entropy".bed
+    
+Step 2: run php main.php "coverage.bed" "entropy.bed"
+
+Step 3: view plot.js, and replace the result file name with the corresponding result file (Lines 3 and 14).
