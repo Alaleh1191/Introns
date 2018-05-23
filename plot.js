@@ -10,13 +10,15 @@ xhr.onreadystatechange = function()
 		var json = JSON.parse(xhr.responseText);
 
 		var xhr2 = new XMLHttpRequest();
+		
+		xhr2.open('GET', 'Files/N1Acoverage.bed_result.txt');
 
 		xhr2.onreadystatechange = function()
         {
             if(xhr2.readyState == 4 && xhr2.status == 200)
             {
 
-var data1 = xhr2.responseText;
+var data1 = JSON.parse(xhr2.responseText);
 var data = json;//[[5,3,2,1,2], [10,17,4,5,8], [15,4,2,6,7], [2,8,3,10,14]]; //first is mean, second is std, 3rd is entropy, 4th is start, 5th is end, 6th is median, 7th is max depth
    
 var margin = {top: 20, right: 15, bottom: 60, left: 60}
