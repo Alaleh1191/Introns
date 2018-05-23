@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The d3 plots</title>
+    <style>
+      .chart {
+
+      }
+
+      .main text {
+          font: 10px sans-serif;	
+      }
+
+      .axis line, .axis path {
+          shape-rendering: crispEdges;
+          stroke: black;
+          fill: none;
+      }
+
+      .ms{
+          fill: #3498db;
+      }
+      .me {
+          fill: rgb(234, 112, 111);
+      }
+      .ml{
+          fill: #1abc9c;
+      }
+      .tooltip {
+        position: absolute;
+        width: 200px;
+        height: 28px;
+        pointer-events: none;
+      }
+
+    </style>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+  </head>
+  <body>
+    <div class='meanStd' style="float:left">
+      <!-- /the chart goes here -->
+    </div>
+    <div class='meanEntropy' style="float:left">
+      <!-- /the chart goes here -->
+    </div>
+    <div class='meanLength'>
+      <!-- /the chart goes here -->
+    </div>
+    <script type="text/javascript" src="plot.js"></script>
+  </body>
+</html>
